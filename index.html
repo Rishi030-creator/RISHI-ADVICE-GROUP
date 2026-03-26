@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rishi Advice Group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #ffffff;
+            --accent-color: #f2f2f2;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* 🎬 Professional Intro Section */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease-out;
+        }
+
+        .intro-title {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            letter-spacing: 5px;
+            color: #fff;
+            text-transform: uppercase;
+            animation: fadeInGlow 2s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        .intro-subtitle {
+            font-size: 1rem;
+            color: #888;
+            letter-spacing: 3px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            animation: fadeInGlow 2s ease-in-out 1s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInGlow {
+            0% { opacity: 0; transform: scale(0.9); text-shadow: 0 0 0px #fff; }
+            50% { opacity: 1; text-shadow: 0 0 20px #fff; }
+            100% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        }
+
+        /* 🏞️ Main Content & Images */
+        #main-content {
+            display: none; /* Intro ke baad dikhega */
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+        }
+
+        /* Aesthetic Image Sections */
+        .scenery-banner {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 2rem;
+            filter: grayscale(100%); /* B&W Classic Look */
+        }
+
+        .scenery-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .scenery-banner h2 {
+            position: relative;
+            z-index: 1;
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            letter-spacing: 4px;
+        }
+
+        /* 🗂️ Advice Grid */
+        .categories-grid {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: var(--glass);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .category-card:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* 📜 Professional Advice Modal overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: #fff;
+            color: #000;
+            width: 100%;
+            max-width: 800px;
+            padding: 3rem;
+            border-radius: 15px;
+            position: relative;
+            text-align: center;
+            animation: zoomIn 0.5s ease forwards;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #000;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #d9534f;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #000;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .modal-body {
+            font-size: 1.5rem; /* Bade Letter Screen Par */
+            line-height: 1.6;
+            font-weight: 600;
+            color: #111;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .intro-title { font-size: 2rem; }
+            .scenery-banner h2 { font-size: 2rem; }
+            .modal-content { padding: 2rem; }
+            .modal-body { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <h1 class="intro-title">Rishi Advice Group</h1>
+        <p class="intro-subtitle">Precision. Clarity. Success.</p>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1>RISHI ADVICE GROUP</h1>
+            <p style="color: #888;">Black & White Aesthetic Expert Guide</p>
+        </header>
+
+        <div class="scenery-banner" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1950&q=80');">
+            <h2>The Mountains</h2>
+        </div>
+
+        <section class="categories-grid">
+            
+            <div class="category-card" onclick="openAdvice('Gaming')">
+                <i class="fa-solid fa-gamepad"></i>
+                <h3>Gaming Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Travel')">
+                <i class="fa-solid fa-plane"></i>
+                <h3>Travel Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Study')">
+                <i class="fa-solid fa-book-open"></i>
+                <h3>Study Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Adventure')">
+                <i class="fa-solid fa-compass"></i>
+                <h3>Adventure Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Clothing')">
+                <i class="fa-solid fa-shirt"></i>
+                <h3>Clothing Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Coding')">
+                <i class="fa-solid fa-code"></i>
+                <h3>Coding Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Talking')">
+                <i class="fa-solid fa-comments"></i>
+                <h3>Talking Advice</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Mobile')">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <h3>Best Mobile</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Laptop')">
+                <i class="fa-solid fa-laptop"></i>
+                <h3>Best Laptop</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('Skills')">
+                <i class="fa-solid fa-lightbulb"></i>
+                <h3>Best Skills</h3>
+            </div>
+
+            <div class="category-card" onclick="openAdvice('SocialMedia')">
+                <i class="fa-solid fa-share-nodes"></i>
+                <h3>Social Media</h3>
+            </div>
+
+        </section>
+
+        <div class="scenery-banner" style="background-image: url('https://images.unsplash.com/photo-1437482012496-00041ecaf355?auto=format&fit=crop&w=1950&q=80');">
+            <h2>The River</h2>
+        </div>
+
+        <div class="scenery-banner" style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1950&q=80');">
+            <h2>The Nature</h2>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Rishi Advice Group. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="advice-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAdvice()">&times;</span>
+            <div class="modal-title" id="modal-title">Advice</div>
+            <div class="modal-body" id="modal-body">
+                This is standard advice.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ⏳ Intro Animation Handler ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const intro = document.getElementById('intro-screen');
+                const main = document.getElementById('main-content');
+                
+                intro.style.opacity = '0';
+                main.style.display = 'block';
+                
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    main.style.opacity = '1';
+                }, 1000); // Wait for fade-out to complete
+            }, 3000); // 3 seconds of intro
+        });
+
+        // --- 🧠 Professional Data (Advises) ---
+        const adviceData = {
+            Gaming: "DON'T CHASE VICTORIES, CHASE MECHANICS. WINNING IS A BYPRODUCT OF PERFECT FUNDAMENTALS.",
+            Travel: "DON'T JUST BE A TOURIST, BE AN EXPLORER. TRAVEL LIGHT, EAT LOCAL, AND EMBRACE THE UNEXPECTED.",
+            Study: "PRACTICE ACTIVE RECALL OVER PASSIVE READING. THE BRAIN LEARNS BEST BY TESTING, NOT REREADING.",
+            Adventure: "THE ONLY WAY TO OVERCOME FEAR IS TO STEP INTO THE WILD. NATURE FAVORS THE BRAIN OF THE BRAVE.",
+            Clothing: "FIT IS EVERYTHING. A CHEAP OUTFIT THAT FITS PERFECTLY LOOKS BETTER THAN AN EXPENSIVE ILL-FITTING SUIT.",
+            Coding: "WRITE CODE FOR HUMANS TO READ FIRST, AND MACHINES TO RUN SECOND. READABILITY IS THE TRUE MASTERY.",
+            Talking: "BE AN ACTIVE LISTENER. PEOPLE DON'T REMEMBER WHAT YOU SAID, THEY REMEMBER HOW YOU MADE THEM FEEL.",
+            Mobile: "ALWAYS BUY THE PREVIOUS YEAR'S FLAGSHIP DEVICE. IT GIVES YOU 90% PERFORMANCE FOR 60% OF THE PRICE.",
+            Laptop: "NEVER SKIMP ON RAM AND PROCESSOR SPEED. IF YOU ARE ON THE GO, MACBOOK M-SERIES IS THE UNDEFEATED CHAMPION.",
+            Skills: "MASTER ONE HIGH-INCOME SKILL BEFORE LEARNING ANOTHER. DEPTH BEATS BREADTH IN THE MARKETPLACE.",
+            SocialMedia: "BE A CREATOR, NOT A CONSUMER. USE SOCIAL PLATFORMS TO BUILD YOUR NETWORK, NOT DRAIN YOUR TIME."
+        };
+
+        // --- 🔍 Popup Logic ---
+        function openAdvice(category) {
+            const modal = document.getElementById('advice-modal');
+            document.getElementById('modal-title').innerText = category.toUpperCase() + " MASTERCLASS";
+            document.getElementById('modal-body').innerText = adviceData[category];
+            modal.style.display = 'flex';
+        }
+
+        function closeAdvice() {
+            document.getElementById('advice-modal').style.display = 'none';
+        }
+
+        // Close on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('advice-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
